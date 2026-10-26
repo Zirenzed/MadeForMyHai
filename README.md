@@ -13,7 +13,7 @@ npm run preview    # serve the production build
 
 ## Scenes
 1. A Little Gift for You — tap the cassette: starts the music (mini player stays on every scene), reels spin, ribbon sways, petals fall; tap the notes/stamp for little messages; 5 taps reveals a hidden note. Sound-effect toggle is off by default
-2. Songs That Remind Me of You — 4 official Spotify embeds (never autoplay; the mini player pauses here so they don't overlap) + "open in Spotify" fallback
+2. Songs That Remind Me of You — 4 tracks (official Spotify track IDs) that drive the same persistent mini player, so the chosen song keeps playing on every scene; "open in Spotify" fallback on each card + "open in Spotify" fallback
 3. Flowers I Never Gave You — 4 clickable flowers, each with its own note
 4. The Little Secret Hunt — 3 ordered clues, optional hints, forgiving answer matching
 5. Little Things About You — 5-question quiz + scored love-personality quiz (category counting)

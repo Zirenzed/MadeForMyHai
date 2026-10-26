@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { GlobalDefs } from './components/art/Decor'
 import { ART } from './assets/art'
-import { useMusic } from './music'
 import { SceneNavigation } from './components/SceneNavigation'
 import {
   CLUES,
@@ -48,8 +47,6 @@ function useFontsReady(): boolean {
 
 export default function App() {
   const ready = useFontsReady()
-  const music = useMusic()
-  const { suspend } = music
 
   // Everything below lives in memory only. Nothing is written to storage,
   // cookies or the network, and a refresh starts the gift over.
@@ -76,11 +73,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'auto' })
     document.getElementById('scene-title')?.focus({ preventScroll: true })
   }, [scene])
-
-  // Scene 2 has its own Spotify players; pause the mini player there so they don't overlap.
-  useEffect(() => {
-    suspend(scene === 1)
-  }, [scene, suspend])
 
   const setAt = (setter: typeof setKnow) => (q: number, o: number) =>
     setter((prevAnswers) => prevAnswers.map((a, i) => (i === q ? o : a)))

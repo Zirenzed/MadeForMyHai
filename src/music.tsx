@@ -40,9 +40,11 @@ interface MusicApi {
   started: boolean
   playing: boolean
   index: number
-  start: () => void
-  /** pause while another player (scene 2) is on screen */
-  suspend: (on: boolean) => void
+  /** start the player (optionally on a given track). Must be called from a tap. */
+  start: (track?: number) => void
+  /** play a specific track; starts the player if needed */
+  playTrack: (track: number) => void
+  toggle: () => void
 }
 
 const MusicContext = createContext<MusicApi>({
@@ -50,7 +52,8 @@ const MusicContext = createContext<MusicApi>({
   playing: false,
   index: 0,
   start: () => {},
-  suspend: () => {},
+  playTrack: () => {},
+  toggle: () => {},
 })
 
 let apiPromise: Promise<IFrameAPI> | null = null
@@ -86,7 +89,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [index, setIndex] = useState(0)
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
   const [showEmbed, setShowEmbed] = useState(false)
-  const [suspended, setSuspended] = useState(false)
 
   const hostRef = useRef<HTMLDivElement>(null)
   const ctrl = useRef<EmbedController | null>(null)
@@ -107,9 +109,11 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     }, 600)
   }, [])
 
-  const start = useCallback(() => {
+  const start = useCallback((track = 0) => {
     if (began.current) return
     began.current = true
+    indexRef.current = track
+    setIndex(track)
     setStarted(true)
     setStatus('loading')
 
@@ -122,7 +126,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
     Promise.all([loadSpotifyApi(), waitHost()])
       .then(([api, host]) => {
-        api.createController(host, { uri: uriOf(0), width: '100%', height: 80 }, (c) => {
+        api.createController(host, { uri: uriOf(indexRef.current), width: '100%', height: 80 }, (c) => {
           ctrl.current = c
           setStatus('ready')
           c.addListener('playback_update', (e) => {
@@ -147,9 +151,29 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       .catch(() => setStatus('error'))
   }, [goTo])
 
-  const suspend = useCallback((on: boolean) => {
-    setSuspended(on)
-    if (on && playingRef.current) ctrl.current?.pause()
+  const playTrack = useCallback(
+    (track: number) => {
+      if (!began.current) {
+        start(track)
+        return
+      }
+      if (!ctrl.current) {
+        // still loading: the controller will pick up this track when it is created
+        indexRef.current = track
+        setIndex(track)
+        return
+      }
+      if (track === indexRef.current) {
+        if (!playingRef.current) ctrl.current.togglePlay()
+        return
+      }
+      goTo(track)
+    },
+    [start, goTo],
+  )
+
+  const toggle = useCallback(() => {
+    ctrl.current?.togglePlay()
   }, [])
 
   useEffect(
@@ -163,7 +187,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     [],
   )
 
-  const api = useMemo(() => ({ started, playing, index, start, suspend }), [started, playing, index, start, suspend])
+  const api = useMemo(
+    () => ({ started, playing, index, start, playTrack, toggle }),
+    [started, playing, index, start, playTrack, toggle],
+  )
   const song = SONGS[index]
 
   useEffect(() => {
@@ -194,7 +221,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
               <span className="player__now">
                 {status === 'loading' && 'กำลังโหลดเพลง…'}
                 {status === 'error' && 'โหลด Spotify ไม่ได้ ลองกดลิงก์ได้เลย'}
-                {status === 'ready' && (suspended ? 'พักไว้ที่หน้าเพลง' : playing ? 'Now playing' : 'Paused')}
+                {status === 'ready' && (playing ? 'Now playing' : 'Paused')}
               </span>
               <span className="player__title">
                 <span>{song.title}</span> · {song.artist}
@@ -212,10 +239,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
                 <button
                   type="button"
                   className="icon-btn icon-btn--lg"
-                  onClick={() => {
-                    setSuspended(false)
-                    ctrl.current?.togglePlay()
-                  }}
+                  onClick={toggle}
                   aria-label={playing ? 'หยุดเพลงชั่วคราว' : 'เล่นเพลง'}
                   disabled={status !== 'ready'}
                 >
