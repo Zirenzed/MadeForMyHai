@@ -90,7 +90,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
   const [showEmbed, setShowEmbed] = useState(false)
 
-  const hostRef = useRef<HTMLDivElement>(null)
+  const hostRef = useRef<HTMLDivElement>(null) // wrapper only; Spotify swaps its own placeholder inside
   const ctrl = useRef<EmbedController | null>(null)
   const indexRef = useRef(0)
   const playingRef = useRef(false)
@@ -107,6 +107,11 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       ctrl.current?.play()
       advancing.current = false
     }, 600)
+    // Browsers may refuse programmatic playback (e.g. after a 30 s preview ends).
+    // If nothing is playing shortly after, show Spotify's own play button for one tap.
+    window.setTimeout(() => {
+      if (!playingRef.current) setShowEmbed(true)
+    }, 3200)
   }, [])
 
   const start = useCallback((track = 0) => {
@@ -118,9 +123,17 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     setStatus('loading')
 
     // After the player is mounted, create the controller.
+    // The Spotify API *replaces* the element we give it with an iframe, so give it a
+    // throw-away placeholder that React never tracks.
     const waitHost = () =>
-      new Promise<HTMLDivElement>((resolve) => {
-        const check = () => (hostRef.current ? resolve(hostRef.current) : window.requestAnimationFrame(check))
+      new Promise<HTMLElement>((resolve) => {
+        const check = () => {
+          const wrap = hostRef.current
+          if (!wrap) return void window.requestAnimationFrame(check)
+          const placeholder = document.createElement('div')
+          wrap.appendChild(placeholder)
+          resolve(placeholder)
+        }
         check()
       })
 
@@ -136,7 +149,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
             setPlaying(isPlaying)
             if (isPlaying) setShowEmbed(false)
             // finished a track -> next one
-            if (!advancing.current && d.duration > 0 && d.position >= d.duration - 400) {
+            const finished = d.duration > 0 && d.position >= d.duration - 400
+            const previewEnded = d.isPaused && d.position >= 29000 && d.position <= 31500
+            if (!advancing.current && (finished || previewEnded)) {
               goTo(indexRef.current + 1)
             }
           })
@@ -212,7 +227,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
                 </button>
               </p>
             )}
-            <div ref={hostRef} />
+            <div ref={hostRef} className="player__host" />
           </div>
 
           <div className="player__bar">

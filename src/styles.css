@@ -1891,13 +1891,24 @@ button {
   height: 44px;
 }
 .player__embed {
+  /* kept inside the viewport (but invisible) so the browser never throttles it */
   position: fixed;
-  left: -9999px;
+  left: 0;
   bottom: 0;
-  width: 320px;
+  width: 300px;
+  height: 80px;
+  overflow: hidden;
+  opacity: 0.01;
+  pointer-events: none;
+  z-index: -1;
 }
 .player__embed.is-open {
   position: static;
+  height: auto;
+  overflow: visible;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: auto;
   padding: 8px;
   background: var(--warm);
   border: 2px solid var(--ink);
