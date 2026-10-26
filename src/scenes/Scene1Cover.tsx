@@ -26,9 +26,6 @@ export function Scene1Cover({ onOpen }: { onOpen: () => void }) {
       <div className="cover-stage">
         <div className="cover-cassette">
           <CassetteCover lifting={opening} />
-          <span className="note note--cassette" aria-hidden="true">
-            psst… แตะตลับเทปดูสิ
-          </span>
         </div>
       </div>
 

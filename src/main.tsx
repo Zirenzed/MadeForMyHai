@@ -10,11 +10,14 @@ import '@fontsource/dm-sans/latin-700.css'
 import './styles.css'
 import App from './App'
 import { SoundProvider } from './sound'
+import { MusicProvider } from './music'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SoundProvider>
-      <App />
+      <MusicProvider>
+        <App />
+      </MusicProvider>
     </SoundProvider>
   </StrictMode>,
 )

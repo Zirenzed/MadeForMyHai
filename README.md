@@ -12,8 +12,8 @@ npm run preview    # serve the production build
 `dist/` is fully static (relative paths), so it can be hosted anywhere or opened from any static host.
 
 ## Scenes
-1. A Little Gift for You — cassette cover (tap it), optional sound toggle (off by default)
-2. Songs That Remind Me of You — 4 official Spotify embeds (never autoplay) + "open in Spotify" fallback
+1. A Little Gift for You — tap the cassette: starts the music (mini player stays on every scene), reels spin, ribbon sways, petals fall; tap the notes/stamp for little messages; 5 taps reveals a hidden note. Sound-effect toggle is off by default
+2. Songs That Remind Me of You — 4 official Spotify embeds (never autoplay; the mini player pauses here so they don't overlap) + "open in Spotify" fallback
 3. Flowers I Never Gave You — 4 clickable flowers, each with its own note
 4. The Little Secret Hunt — 3 ordered clues, optional hints, forgiving answer matching
 5. Little Things About You — 5-question quiz + scored love-personality quiz (category counting)
@@ -33,3 +33,6 @@ calls (apart from the Spotify iframes the visitor chooses to play). Refreshing r
 ## Accessibility
 Keyboard-operable everywhere, visible focus, focus moves to each scene heading, modal focus trap + Esc,
 44px+ touch targets, `prefers-reduced-motion` respected, sound off by default.
+
+## Music note
+Nothing from Spotify loads until the visitor taps the cassette. Full tracks play only for visitors logged in to Spotify in that browser; otherwise Spotify limits embeds to ~30 s previews. If a browser blocks the first play, a small Spotify box appears asking for one tap on its play button.

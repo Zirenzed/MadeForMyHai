@@ -82,3 +82,15 @@ export const ExternalIcon = () => (
     <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
   </svg>
 )
+
+export const PlayIcon = () => (
+  <svg {...base}>
+    <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />
+  </svg>
+)
+
+export const PauseIcon = () => (
+  <svg {...base}>
+    <path d="M8 5.5v13M16 5.5v13" strokeWidth={3.2} />
+  </svg>
+)
