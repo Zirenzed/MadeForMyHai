@@ -114,7 +114,7 @@ export const FLOWERS: FlowerInfo[] = [
     name: 'Dandelion',
     thaiName: 'แดนดิไลออน',
     label: 'Make a Wish',
-    message: 'ลองเป่าดอกนี้เบา ๆ แล้วขอพรนะ ส่วนของเรา เราขอให้เธอมีวันดี ๆ และรอยยิ้มเยอะ ๆ',
+    message: 'พรที่ผมจะขอ มีเบบี๋อยู่ในนั้นเสมอเลยครับ 😳',
     aside: 'blown softly, just for you',
   },
 ]
