@@ -1974,3 +1974,14 @@ body.has-player .main {
     width: calc(50% - 9px);
   }
 }
+
+/* the dandelion bouquet is a wider, ready-made sticker */
+.flower-btn__art.flower-art--dandelion {
+  width: min(92%, 178px);
+}
+.note-paper__flower.flower-art--dandelion {
+  width: 200px;
+}
+.flower-art--dandelion .flower-art__img {
+  filter: none;
+}

@@ -113,7 +113,7 @@ export const FLOWERS: FlowerInfo[] = [
     id: 'dandelion',
     name: 'Dandelion',
     thaiName: 'แดนดิไลออน',
-    label: 'Make a Wish',
+    label: 'For Your Bright Days',
     message: 'พรที่ผมจะขอ มีเบบี๋อยู่ในนั้นเสมอเลยครับ 😳',
     aside: 'blown softly, just for you',
   },
