@@ -1586,7 +1586,16 @@ button {
 
 @media (min-width: 600px) {
   .flower-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .flower-grid li {
+    grid-column: span 2;
+  }
+  .flower-grid li:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+  .flower-grid li:nth-child(5) {
+    grid-column: 4 / span 2;
   }
   .choices-row {
     grid-template-columns: 1fr 1fr;
@@ -1955,4 +1964,13 @@ body.has-player .main {
 .track.is-current {
   border-color: var(--ink);
   box-shadow: 0 0 0 3px rgba(183, 214, 224, 0.8), var(--shadow);
+}
+
+/* odd flower out sits centred on the 2-column mobile grid */
+@media (max-width: 599px) {
+  .flower-grid li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 9px);
+  }
 }

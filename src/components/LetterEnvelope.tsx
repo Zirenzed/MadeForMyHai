@@ -10,6 +10,7 @@ const SEAL_COLORS: Record<Letter['flower'], { petal: string; center: string }> =
   rose: { petal: '#E7A5B5', center: '#DE8CA2' },
   daisy: { petal: '#FFFEF9', center: '#F2C94C' },
   violet: { petal: '#C9C0DE', center: '#F4E3A1' },
+  dandelion: { petal: '#DDE6EF', center: '#9C8B63' },
 }
 
 export function LetterEnvelope({ letter, index }: { letter: Letter; index: number }) {

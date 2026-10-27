@@ -156,7 +156,7 @@ export function FlowerGallery() {
 
       <p className="whisper" role="status">
         {allSeen
-          ? 'ครบทั้งสี่ดอกแล้ว นี่คือช่อดอกไม้ที่เรายังไม่เคยได้ให้เธอ ♡'
+          ? 'ครบทุกดอกแล้ว นี่คือดอกไม้ที่เรายังไม่เคยได้ให้เธอ ♡'
           : `แตะดอกไม้เพื่ออ่านโน้ตเล็ก ๆ · อ่านแล้ว ${seen.length} / ${FLOWERS.length}`}
       </p>
 

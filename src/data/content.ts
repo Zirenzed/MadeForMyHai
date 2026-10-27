@@ -65,7 +65,7 @@ export const SONGS: Song[] = [
 /* Scene 3 — flowers                                                   */
 /* ------------------------------------------------------------------ */
 
-export type FlowerId = 'sunflower' | 'rose' | 'daisy' | 'violet'
+export type FlowerId = 'sunflower' | 'rose' | 'daisy' | 'violet' | 'dandelion'
 
 export interface FlowerInfo {
   id: FlowerId
@@ -108,6 +108,14 @@ export const FLOWERS: FlowerInfo[] = [
     label: 'Just Because',
     message: 'ไม่มีเหตุผลพิเศษหรอก แค่อยากให้ดอกไม้เบบี๋เฉยๆ',
     aside: 'no reason needed',
+  },
+  {
+    id: 'dandelion',
+    name: 'Dandelion',
+    thaiName: 'แดนดิไลออน',
+    label: 'Make a Wish',
+    message: 'ลองเป่าดอกนี้เบา ๆ แล้วขอพรนะ ส่วนของเรา เราขอให้เธอมีวันดี ๆ และรอยยิ้มเยอะ ๆ',
+    aside: 'blown softly, just for you',
   },
 ]
 
